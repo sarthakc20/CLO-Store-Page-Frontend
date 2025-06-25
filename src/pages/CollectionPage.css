@@ -67,8 +67,29 @@
   }
 }
 
+.checkbox-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: rgb(32, 31, 37);
+  color: rgb(104, 103, 110);
+  border: none;
+}
+
 .checkboxes label {
   margin-right: 10px;
+}
+
+.checkboxes label input {
+  margin-right: 10px;
+}
+
+.css-45g6nr-MuiSlider-root{
+  padding: 0;
 }
 
 .grid {

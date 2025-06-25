@@ -7,6 +7,7 @@ import "./CollectionPage.css";
 import { ITEMS_PER_PAGE } from "../constants/contentConstants";
 import SkeletonCard from "../components/SkeletonCard";
 import { FiSearch } from "react-icons/fi";
+import Slider from "@mui/material/Slider";
 
 const pricingLabels = {
   0: "Paid",
@@ -25,6 +26,7 @@ const CollectionPage = () => {
   const [search, setSearch] = useState("");
   const [selectedPricing, setSelectedPricing] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [priceRange, setPriceRange] = useState([0, 999]);
 
   useEffect(() => {
     dispatch(listContents());
@@ -40,7 +42,15 @@ const CollectionPage = () => {
       );
     }
 
-    if (search.trim()) {
+    if (selectedPricing.includes(0)) {
+      filteredData = filteredData.filter(
+        (item) =>
+          item.pricingOption !== 0 ||
+          (item.price >= priceRange[0] && item.price <= priceRange[1])
+      );
+    }
+
+    if (search.trim().length >= 3) {
       filteredData = filteredData.filter(
         (item) =>
           item.creator.toLowerCase().includes(search.toLowerCase()) ||
@@ -51,7 +61,7 @@ const CollectionPage = () => {
     setFiltered(filteredData);
     setDisplayedItems(filteredData.slice(0, ITEMS_PER_PAGE));
     setHasMore(filteredData.length > ITEMS_PER_PAGE);
-  }, [contents, selectedPricing, search]);
+  }, [contents, selectedPricing, search, priceRange]);
 
   const togglePricing = (value) => {
     setSelectedPricing((prev) =>
@@ -62,6 +72,7 @@ const CollectionPage = () => {
   const resetFilters = () => {
     setSearch("");
     setSelectedPricing([]);
+    setPriceRange([0, 999]);
   };
 
   const fetchMoreData = () => {
@@ -88,26 +99,60 @@ const CollectionPage = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="search-info">
-            <span><span>3</span> keyword search</span>
+            <span>
+              <span>3</span> keyword search
+            </span>
             <FiSearch className="icon" />
           </div>
+          {search.trim().length > 0 && search.trim().length < 3 && (
+            <p style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.5rem" }}>
+              Please enter at least 3 characters to search
+            </p>
+          )}
         </div>
 
-        <div className="checkboxes">
-          {Object.entries(pricingLabels).map(([key, label]) => (
-            <label key={key}>
-              <input
-                type="checkbox"
-                checked={selectedPricing.includes(Number(key))}
-                onChange={() => togglePricing(Number(key))}
+        <div className="checkbox-wrapper">
+          <div className="checkboxes">
+            {Object.entries(pricingLabels).map(([key, label]) => (
+              <label key={key}>
+                <input
+                  type="checkbox"
+                  checked={selectedPricing.includes(Number(key))}
+                  onChange={() => togglePricing(Number(key))}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+
+          {selectedPricing.includes(0) && (
+            <div className="slider-container">
+              <label style={{ marginBottom: "0.5rem", display: "block" }}>
+                Price Range: ${priceRange[0]} - ${priceRange[1]}
+              </label>
+              <Slider
+                value={priceRange}
+                onChange={(_, newValue) => setPriceRange(newValue)}
+                valueLabelDisplay="auto"
+                min={0}
+                max={999}
+                disableSwap
+                sx={{ width: "100%", maxWidth: "300px" }}
               />
-              {label}
-            </label>
-          ))}
-        </div>
+            </div>
+          )}
 
-        <button onClick={resetFilters}>Reset</button>
+          <button onClick={resetFilters}>Reset</button>
+        </div>
       </div>
+      {selectedPricing.includes(0) &&
+        (selectedPricing.includes(1) || selectedPricing.includes(2)) && (
+          <p
+            style={{ fontSize: "0.85rem", color: "#666", marginTop: "-0.5rem", marginBottom: "0.5rem"  }}
+          >
+            *Price range only applies to Paid items
+          </p>
+        )}
 
       {loading ? (
         <div className="grid">
