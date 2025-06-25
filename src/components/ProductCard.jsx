@@ -9,14 +9,20 @@ const pricingLabels = {
 const ProductCard = ({ item }) => {
   return (
     <div className="card">
-      <img src={item.imagePath} alt={item.title} />
+      <div className="card-image">
+        <img src={item.imagePath} alt={item.title} />
+      </div>
       <div className="info">
-        <h3>{item.title}</h3>
-        <p>{item.creator}</p>
-        <p>
-          {pricingLabels[item.pricingOption]}
-          {item.pricingOption === 0 && item.price ? ` - $${item.price}` : ""}
-        </p>
+        <div className="title-container">
+          <p>{item.creator}</p>
+          <p>{item.title}</p>
+        </div>
+        <div className="price-container">
+          <h3>
+            {item.pricingOption === 0 ? "" : pricingLabels[item.pricingOption]}
+            {item.pricingOption === 0 && item.price ? `$${item.price}` : ""}
+          </h3>
+        </div>
       </div>
     </div>
   );

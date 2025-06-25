@@ -2,3 +2,9 @@
   margin: 0;
   scroll-behavior: smooth;
 }
+
+body {
+  background-color: rgb(25, 25, 30);
+  color: white;
+  font-family: Inter, AvenirNextLTPro, sans-serif;
+}

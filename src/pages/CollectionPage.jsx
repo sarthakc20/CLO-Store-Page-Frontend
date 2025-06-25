@@ -6,6 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import "./CollectionPage.css";
 import { ITEMS_PER_PAGE } from "../constants/contentConstants";
 import SkeletonCard from "../components/SkeletonCard";
+import { FiSearch } from "react-icons/fi";
 
 const pricingLabels = {
   0: "Paid",
@@ -79,12 +80,18 @@ const CollectionPage = () => {
   return (
     <div className="collection-container">
       <div className="filters">
-        <input
-          type="text"
-          placeholder="Find the items you're looking for"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="search-wrapper">
+          <input
+            type="text"
+            placeholder="Find the items you're looking for"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="search-info">
+            <span><span>3</span> keyword search</span>
+            <FiSearch className="icon" />
+          </div>
+        </div>
 
         <div className="checkboxes">
           {Object.entries(pricingLabels).map(([key, label]) => (

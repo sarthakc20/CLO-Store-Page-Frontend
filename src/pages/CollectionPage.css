@@ -12,10 +12,59 @@
   align-items: center;
 }
 
-.filters input[type="text"] {
-  padding: 8px;
-  flex: 1;
-  min-width: 200px;
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-wrapper input {
+  width: -webkit-fill-available;
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: rgb(32, 31, 37);
+  color: rgb(104, 103, 110);
+  border: none;
+}
+
+.search-info {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  font-size: 14px;
+  padding-left: 8px;
+}
+
+.search-info span {
+  font-style: 19px;
+  color: rgb(101, 208, 149);
+}
+
+.search-info span span {
+  padding: 2px 6px;
+  margin-right: 2px;
+  border-radius: 50%;
+  background-color: rgb(101, 208, 149);
+  color: rgb(32, 31, 37);
+}
+
+.search-info .icon {
+  font-size: 20px;
+  color: rgb(104, 103, 110);
+}
+
+@media (max-width: 480px) {
+  .search-info span {
+    display: none;
+  }
+
+  .search-info .icon {
+    font-size: 14px;
+  }
 }
 
 .checkboxes label {
@@ -47,25 +96,40 @@
 }
 
 .card {
-  border: 1px solid #ddd;
   padding: 10px;
-  background: #fff;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.card-image {
+  height: 300px;
+}
+
 .card img {
   width: 100%;
-  height: auto;
+  height: 100%;
   border-radius: 4px;
+  object-fit: cover;
+}
+
+.card .info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  align-items: center;
 }
 
 .info h3 {
-  margin: 10px 0 5px;
   font-size: 18px;
 }
 
+.title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .info p {
-  margin: 0;
-  color: #555;
+  color: #cacaca;
+  font-size: 14px;
 }
