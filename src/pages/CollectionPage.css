@@ -80,16 +80,25 @@
   border: none;
 }
 
-.checkboxes label {
-  margin-right: 10px;
+.checkboxes {
+  display: flex;
+  gap: 12px;
 }
 
 .checkboxes label input {
   margin-right: 10px;
 }
 
-.css-45g6nr-MuiSlider-root{
-  padding: 0;
+.checkbox-wrapper button {
+  background-color: rgb(25, 25, 30);
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+.css-45g6nr-MuiSlider-root {
+  padding: 0 !important;
 }
 
 .grid {
@@ -107,6 +116,15 @@
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .checkbox-wrapper {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .checkboxes {
+    flex-direction: column;
   }
 }
 

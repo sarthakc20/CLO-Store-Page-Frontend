@@ -105,7 +105,13 @@ const CollectionPage = () => {
             <FiSearch className="icon" />
           </div>
           {search.trim().length > 0 && search.trim().length < 3 && (
-            <p style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.5rem" }}>
+            <p
+              style={{
+                fontSize: "0.85rem",
+                color: "#666",
+                marginTop: "0.5rem",
+              }}
+            >
               Please enter at least 3 characters to search
             </p>
           )}
@@ -113,6 +119,7 @@ const CollectionPage = () => {
 
         <div className="checkbox-wrapper">
           <div className="checkboxes">
+            <p>Pricing options</p>
             {Object.entries(pricingLabels).map(([key, label]) => (
               <label key={key}>
                 <input
@@ -148,7 +155,12 @@ const CollectionPage = () => {
       {selectedPricing.includes(0) &&
         (selectedPricing.includes(1) || selectedPricing.includes(2)) && (
           <p
-            style={{ fontSize: "0.85rem", color: "#666", marginTop: "-0.5rem", marginBottom: "0.5rem"  }}
+            style={{
+              fontSize: "0.85rem",
+              color: "#666",
+              marginTop: "-0.5rem",
+              marginBottom: "0.5rem",
+            }}
           >
             *Price range only applies to Paid items
           </p>
