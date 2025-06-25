@@ -107,33 +107,6 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
-@media (max-width: 1200px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .checkbox-wrapper {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .checkboxes {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .card {
   padding: 10px;
   border-radius: 6px;
@@ -171,4 +144,40 @@
 .info p {
   color: #cacaca;
   font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .checkbox-wrapper {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .checkboxes {
+    flex-direction: column;
+  }
+
+  .checkbox-wrapper button {
+    padding: 6px 14px;
+    border-radius: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 0;
+  }
 }
