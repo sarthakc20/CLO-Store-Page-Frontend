@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listContents } from "../actions/contentActions";
 import ProductCard from "../components/ProductCard";
+import InfiniteScroll from "react-infinite-scroll-component";
 import "./CollectionPage.css";
+import { ITEMS_PER_PAGE } from "../constants/contentConstants";
+import SkeletonCard from "../components/SkeletonCard";
 
 const pricingLabels = {
   0: "Paid",
@@ -17,15 +20,16 @@ const CollectionPage = () => {
   );
 
   const [filtered, setFiltered] = useState([]);
+  const [displayedItems, setDisplayedItems] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedPricing, setSelectedPricing] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  // Load data from Redux when the component mounts
   useEffect(() => {
     dispatch(listContents());
   }, [dispatch]);
 
-  // Filter content every time the filters or Redux data change
+  // Filter logic
   useEffect(() => {
     let filteredData = [...contents];
 
@@ -44,6 +48,8 @@ const CollectionPage = () => {
     }
 
     setFiltered(filteredData);
+    setDisplayedItems(filteredData.slice(0, ITEMS_PER_PAGE));
+    setHasMore(filteredData.length > ITEMS_PER_PAGE);
   }, [contents, selectedPricing, search]);
 
   const togglePricing = (value) => {
@@ -57,12 +63,25 @@ const CollectionPage = () => {
     setSelectedPricing([]);
   };
 
+  const fetchMoreData = () => {
+    const nextItems = filtered.slice(
+      displayedItems.length,
+      displayedItems.length + ITEMS_PER_PAGE
+    );
+
+    setDisplayedItems((prev) => [...prev, ...nextItems]);
+
+    if (displayedItems.length + nextItems.length >= filtered.length) {
+      setHasMore(false);
+    }
+  };
+
   return (
     <div className="collection-container">
       <div className="filters">
         <input
           type="text"
-          placeholder="Search by name or title..."
+          placeholder="Find the items you're looking for"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -84,15 +103,32 @@ const CollectionPage = () => {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <div className="grid">
+          {Array.from({ length: 8 }).map((_, idx) => (
+            <SkeletonCard key={idx} />
+          ))}
+        </div>
       ) : error ? (
         <p style={{ color: "red" }}>{error}</p>
       ) : (
-        <div className="grid">
-          {filtered.map((item) => (
-            <ProductCard key={item.id} item={item} />
-          ))}
-        </div>
+        <InfiniteScroll
+          dataLength={displayedItems.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={
+            <div className="grid">
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <SkeletonCard key={idx} />
+              ))}
+            </div>
+          }
+        >
+          <div className="grid">
+            {displayedItems.map((item) => (
+              <ProductCard key={item.id} item={item} />
+            ))}
+          </div>
+        </InfiniteScroll>
       )}
     </div>
   );
