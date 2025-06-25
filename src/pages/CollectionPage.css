@@ -164,6 +164,7 @@
 
   .checkboxes {
     flex-direction: column;
+    align-items: center;
   }
 
   .checkbox-wrapper button {
