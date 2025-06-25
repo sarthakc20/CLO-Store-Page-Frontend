@@ -10,7 +10,7 @@ const ProductCard = ({ item }) => {
   return (
     <div className="card">
       <div className="card-image">
-        <img src={item.imagePath} alt={item.title} />
+        <img src={item.imagePath} alt={item.title} loading="lazy"/>
       </div>
       <div className="info">
         <div className="title-container">
