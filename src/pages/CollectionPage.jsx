@@ -1,38 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { listContents } from "../actions/contentActions";
+import ProductCard from "../components/ProductCard";
 import "./CollectionPage.css";
-
-const dummyData = [
-  {
-    id: 1,
-    photo: "https://via.placeholder.com/150",
-    username: "Anisha Roy",
-    title: "Photography Tips",
-    pricingOption: 0, // Paid
-    price: 49,
-  },
-  {
-    id: 2,
-    photo: "https://via.placeholder.com/150",
-    username: "John Doe",
-    title: "React Basics",
-    pricingOption: 1, // Free
-  },
-  {
-    id: 3,
-    photo: "https://via.placeholder.com/150",
-    username: "Emily Smith",
-    title: "Design Portfolio",
-    pricingOption: 2, // View Only
-  },
-  {
-    id: 4,
-    photo: "https://via.placeholder.com/150",
-    username: "Anisha Roy",
-    title: "Advanced JavaScript",
-    pricingOption: 0,
-    price: 99,
-  },
-];
 
 const pricingLabels = {
   0: "Paid",
@@ -41,16 +11,21 @@ const pricingLabels = {
 };
 
 const CollectionPage = () => {
-  const [contents, setContents] = useState([]);
+  const dispatch = useDispatch();
+  const { loading, error, contents } = useSelector(
+    (state) => state.contentList
+  );
+
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedPricing, setSelectedPricing] = useState([]);
 
+  // Load data from Redux when the component mounts
   useEffect(() => {
-    setContents(dummyData);
-    setFiltered(dummyData);
-  }, []);
+    dispatch(listContents());
+  }, [dispatch]);
 
+  // Filter content every time the filters or Redux data change
   useEffect(() => {
     let filteredData = [...contents];
 
@@ -63,13 +38,13 @@ const CollectionPage = () => {
     if (search.trim()) {
       filteredData = filteredData.filter(
         (item) =>
-          item.username.toLowerCase().includes(search.toLowerCase()) ||
+          item.creator.toLowerCase().includes(search.toLowerCase()) ||
           item.title.toLowerCase().includes(search.toLowerCase())
       );
     }
 
     setFiltered(filteredData);
-  }, [selectedPricing, search, contents]);
+  }, [contents, selectedPricing, search]);
 
   const togglePricing = (value) => {
     setSelectedPricing((prev) =>
@@ -108,23 +83,17 @@ const CollectionPage = () => {
         <button onClick={resetFilters}>Reset</button>
       </div>
 
-      <div className="grid">
-        {filtered.map((item) => (
-          <div key={item.id} className="card">
-            <img src={item.photo} alt={item.title} />
-            <div className="info">
-              <h3>{item.title}</h3>
-              <p>{item.username}</p>
-              <p>
-                {pricingLabels[item.pricingOption]}
-                {item.pricingOption === 0 && item.price
-                  ? ` - $${item.price}`
-                  : ""}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p style={{ color: "red" }}>{error}</p>
+      ) : (
+        <div className="grid">
+          {filtered.map((item) => (
+            <ProductCard key={item.id} item={item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
